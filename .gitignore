@@ -1,0 +1,7 @@
+*.log
+command.txt
+package.json
+rxslider/README.md
+rxslider/README_RU.md
+node_modules/
+src/
