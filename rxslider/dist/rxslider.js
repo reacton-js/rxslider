@@ -34,6 +34,7 @@
     const time = slider.dataset.time || 3000 // временной интервал
     const store = new WeakMap() // хранилище кнопок навигации
     let current = slides.firstElementChild // текущий слайд
+    let idInterval // ID интервала
 
     // создать панель навигации
     const nav = document.createElement('nav')
@@ -150,7 +151,7 @@
 
 
     // если автозапуск не отменялся, то определить интервал прокрутки слайдов
-    if (!stop) var idInterval = setInterval(() => next.click(), time)
+    if (!stop) idInterval = setInterval(() => next.click(), time)
 
     // при изменении размера окна, сдвинуть слайд к стартовой позиции
     window.addEventListener('resize', () => scrollView(current, 'auto'))
