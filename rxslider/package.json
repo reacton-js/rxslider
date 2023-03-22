@@ -1,0 +1,17 @@
+{
+  "name": "rxslider",
+  "version": "1.0.1",
+  "description": "Responsive X-axis Slider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "responsive",
+    "slider",
+    "html",
+    "js"
+  ],
+  "author": "https://github.com/reacton-js",
+  "license": "MIT"
+}

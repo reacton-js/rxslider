@@ -1,6 +1,6 @@
 *.log
 command.txt
-package.json
+/package.json
 rxslider/README.md
 rxslider/README_RU.md
 node_modules/
