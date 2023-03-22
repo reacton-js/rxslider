@@ -23,7 +23,7 @@ Responsive X-axis Slider
 <body>
   
   <div class="rxslider" style="max-width: 800px;">
-    <button class="rxslider__prev">◄</button>
+    <button class="rxslider__prev">≺</button>
     <div class="rxslider__slides">
       <div>
         <img src="img/1.jpg" alt="1">
@@ -47,7 +47,7 @@ Responsive X-axis Slider
         <img src="img/7.jpg" alt="7">
       </div>
     </div>
-    <button class="rxslider__next">►</button>
+    <button class="rxslider__next">≻</button>
   </div>
 
   <script src="rxslider.min.js"></script>
