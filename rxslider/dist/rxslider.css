@@ -12,6 +12,10 @@
   margin: 0 auto;
 }
 
+.rxslider * {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .rxslider__slides {
   display: flex;
   align-items: center;
