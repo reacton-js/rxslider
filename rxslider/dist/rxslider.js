@@ -1,7 +1,14 @@
 'use strict'
 
 !function() {
-  // перемещает слайд к стартовой позиции
+  // удаляет класс у кнопок навигации
+  function removeClass(nav) {
+    for (const btn of nav.children) {
+      btn.classList.remove('rxslider__active')
+    }
+  }
+
+  // перемещает скролл к позиции слайда
   function scrollView(slide, behavior = 'smooth') {
     slide.parentElement.scrollTo({
       left: slide.offsetLeft,
@@ -9,19 +16,40 @@
     })
   }
 
-  // удаляет старый интервал и устанавливает новый
-  function stopInterval(id, next, time) {
-    clearInterval(id)
-    return setInterval(() => next.click(), time)
-  }
+  // перемещает слайд в зависимости от направления
+  function moveSlide(current, slides, nav, store, isPrev) {
+    // получить предыдущий/следующий слайд
+    current = isPrev ? current.previousElementSibling : current.nextElementSibling
+    
+    // если слайд не получен
+    if (!current) {
+      // получить последний/первый слайд
+      const slide = isPrev ? slides.lastElementChild : slides.firstElementChild
 
-  // удаляет класс у кнопок навигации
-  function removeClass(nav) {
-    for (const btn of nav.children) {
-      btn.classList.remove('rxslider__active')
+      // добавить его в начало/конец
+      isPrev ? slides.prepend(slide) : slides.append(slide)
+
+      // сдвинуть следующий/предыдущий слайд к стартовой позиции
+      scrollView(isPrev ? slide.nextElementSibling : slide.previousElementSibling, 'instant')
+
+      // сделать последний/первый слайд текущим
+      current = slide
     }
+
+    // удалить класс у всех кнопок навигации
+    removeClass(nav)
+
+    // добавить кнопке навигации из хранилища активный класс
+    store.get(current).classList.add('rxslider__active')
+
+    // сдвинуть текущий слайд к стартовой позиции
+    scrollView(current)
+
+    // вернуть текущий слайд
+    return current
   }
   
+
   // получить все слайдеры в документе
   const rxsliders = document.querySelectorAll('.rxslider')
 
@@ -55,8 +83,14 @@
 
       // определить обработчик для кнопки навигации
       button.addEventListener('click', () => {
-        // если автозапуск не отменялся, то обновить интервал прокрутки слайдов
-        if (!stop) idInterval = stopInterval(idInterval, next, time)
+        // если автозапуск не отменялся
+        if (!stop) {
+          // удалить текущий интервал
+          clearInterval(idInterval)
+
+          // определить новый интервал прокрутки слайдов
+          idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+        }
 
         // удалить класс у всех кнопок навигации
         removeClass(nav)
@@ -84,74 +118,41 @@
 
     // определить обработчик для кнопки Назад
     prev.addEventListener('click', () => {
-      // если автозапуск не отменялся, то обновить интервал прокрутки слайдов
-      if (!stop) idInterval = stopInterval(idInterval, next, time)
+      // если автозапуск не отменялся
+      if (!stop) {
+        // удалить текущий интервал
+        clearInterval(idInterval)
 
-      // получить предыдущий слайд
-      current = current.previousElementSibling
-      
-      // если слайд не получен
-      if (!current) {
-        // получить последний слайд
-        const last = slides.lastElementChild
-
-        // добавить его в начало
-        slides.prepend(last)
-
-        // сдвинуть следующий слайд к стартовой позиции
-        scrollView(last.nextElementSibling, 'instant')
-
-        // сделать последний слайд текущим
-        current = last
+        // определить новый интервал прокрутки слайдов
+        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
       }
 
-      // удалить класс у всех кнопок навигации
-      removeClass(nav)
-
-      // добавить кнопке навигации из хранилища активный класс
-      store.get(current).classList.add('rxslider__active')
-
-      // сдвинуть текущий слайд к стартовой позиции
-      scrollView(current)
+      // сдвинуть предыдущий слайд и сделать его текущим
+      current = moveSlide(current, slides, nav, store, true)
     })
 
 
     // определить обработчик для кнопки Вперёд
     next.addEventListener('click', () => {
-      // если автозапуск не отменялся, то обновить интервал прокрутки слайдов
-      if (!stop) idInterval = stopInterval(idInterval, next, time)
+      // если автозапуск не отменялся
+      if (!stop) {
+        // удалить текущий интервал
+        clearInterval(idInterval)
 
-      // получить следующий слайд
-      current = current.nextElementSibling
-      
-      // если слайд не получен
-      if (!current) {
-        // получить первый слайд
-        const first = slides.firstElementChild
-
-        // добавить его в конец
-        slides.append(first)
-
-        // сдвинуть предыдущий слайд к стартовой позиции
-        scrollView(first.previousElementSibling, 'instant')
-        
-        // сделать первый слайд текущим
-        current = first
+        // определить новый интервал прокрутки слайдов
+        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
       }
 
-      // удалить класс у всех кнопок навигации
-      removeClass(nav)
-
-      // добавить кнопке навигации из хранилища активный класс
-      store.get(current).classList.add('rxslider__active')
-
-      // сдвинуть текущий слайд к стартовой позиции
-      scrollView(current)
+      // сдвинуть следующий слайд и сделать его текущим
+      current = moveSlide(current, slides, nav, store)
     })
 
 
-    // если автозапуск не отменялся, то определить интервал прокрутки слайдов
-    if (!stop) idInterval = setInterval(() => next.click(), time)
+    // если автозапуск не отменялся
+    if (!stop) {
+      // определить интервал прокрутки слайдов
+      idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+    }
 
     // при изменении размера окна, сдвинуть слайд к стартовой позиции
     window.addEventListener('resize', () => scrollView(current, 'instant'))
