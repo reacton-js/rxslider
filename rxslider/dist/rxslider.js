@@ -3,8 +3,8 @@
 !function() {
   // перемещает слайд к стартовой позиции
   function scrollView(slide, behavior = 'smooth') {
-    slide.scrollIntoView({
-      inline: 'start',
+    slide.parentElement.scrollTo({
+      left: slide.offsetLeft,
       behavior
     })
   }
@@ -99,7 +99,7 @@
         slides.prepend(last)
 
         // сдвинуть следующий слайд к стартовой позиции
-        scrollView(last.nextElementSibling, 'auto')
+        scrollView(last.nextElementSibling, 'instant')
 
         // сделать последний слайд текущим
         current = last
@@ -133,7 +133,7 @@
         slides.append(first)
 
         // сдвинуть предыдущий слайд к стартовой позиции
-        scrollView(first.previousElementSibling, 'auto')
+        scrollView(first.previousElementSibling, 'instant')
         
         // сделать первый слайд текущим
         current = first
@@ -154,6 +154,6 @@
     if (!stop) idInterval = setInterval(() => next.click(), time)
 
     // при изменении размера окна, сдвинуть слайд к стартовой позиции
-    window.addEventListener('resize', () => scrollView(current, 'auto'))
+    window.addEventListener('resize', () => scrollView(current, 'instant'))
   }
 }()
