@@ -50,6 +50,9 @@
   }
   
 
+  // определить хранилище обратных вызовов
+  const callbacks = new Set()
+
   // получить все слайдеры в документе
   const rxsliders = document.querySelectorAll('.rxslider')
 
@@ -154,7 +157,10 @@
       idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
     }
 
-    // при изменении размера окна, сдвинуть слайд к стартовой позиции
-    window.addEventListener('resize', () => scrollView(current, 'instant'))
+    // добавить обратный вызов в хранилище
+    callbacks.add(() => scrollView(current, 'instant'))
   }
+
+  // при изменении размера окна, вызвать обратные вызовы из хранилища
+  window.addEventListener('resize', () => callbacks.forEach(cb => cb()))
 }()
