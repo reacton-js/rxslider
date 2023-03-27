@@ -161,6 +161,21 @@
     callbacks.add(() => scrollView(current, 'instant'))
   }
 
+  // определить датчик выполнения
+  let teak = true
+
   // при изменении размера окна, вызвать обратные вызовы из хранилища
-  window.addEventListener('resize', () => callbacks.forEach(cb => cb()))
+  window.addEventListener('resize', () => {
+    // если датчик включен
+    if (teak) {
+      // выключить датчик
+      teak = false
+
+      // выполнить обратные вызовы всех слайдеров
+      callbacks.forEach(cb => cb())
+
+      // включить датчик
+      teak = true
+    }
+  })
 }()
