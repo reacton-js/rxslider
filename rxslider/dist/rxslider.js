@@ -61,6 +61,7 @@
     const prev = slider.querySelector('.rxslider__prev') // кнопка Назад
     const next = slider.querySelector('.rxslider__next') // кнопка Вперёд
     const stop = slider.dataset.hasOwnProperty('stop') // датчик автозапуска
+    const left = slider.dataset.hasOwnProperty('left') // датчик обратного направления
     const slides = slider.querySelector('.rxslider__slides') // родитель слайдов
     const time = slider.dataset.time || 3000 // временной интервал
     const store = new WeakMap() // хранилище кнопок навигации
@@ -92,7 +93,7 @@
           clearInterval(idInterval)
 
           // определить новый интервал прокрутки слайдов
-          idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+          idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, left), time)
         }
 
         // удалить класс у всех кнопок навигации
@@ -127,7 +128,7 @@
         clearInterval(idInterval)
 
         // определить новый интервал прокрутки слайдов
-        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, left), time)
       }
 
       // сдвинуть предыдущий слайд и сделать его текущим
@@ -143,7 +144,7 @@
         clearInterval(idInterval)
 
         // определить новый интервал прокрутки слайдов
-        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, left), time)
       }
 
       // сдвинуть следующий слайд и сделать его текущим
@@ -154,7 +155,7 @@
     // если автозапуск не отменялся
     if (!stop) {
       // определить интервал прокрутки слайдов
-      idInterval = setInterval(() => current = moveSlide(current, slides, nav, store), time)
+      idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, left), time)
     }
 
     // добавить обратный вызов в хранилище
