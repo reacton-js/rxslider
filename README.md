@@ -82,10 +82,10 @@ The slider takes three attributes. The ***data-stop*** attribute without a value
 <div class="rxslider" data-stop>
 ```
 
-Attribute ***data-left*** without value, changes the scrolling direction of the slider. By default, the slider scrolls to the right, but this can easily be changed:
+Attribute ***data-back*** without value, changes the scrolling direction of the slider. By default, the slider scrolls to the right, but this can easily be changed:
 
 ```html
-<div class="rxslider" data-left>
+<div class="rxslider" data-back>
 ```
 
 The ***data-time*** attribute specifies the number of milliseconds the slider will pause before moving on to the next slide. By default, this value is 3000 milliseconds, but you can change it:
