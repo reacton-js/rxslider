@@ -169,14 +169,16 @@
   window.addEventListener('resize', () => {
     // если датчик включен
     if (teak) {
+      window.requestAnimationFrame(() => {
+        // выполнить обратные вызовы всех слайдеров
+        callbacks.forEach(cb => cb())
+
+        // включить датчик
+        teak = true
+      })
+
       // выключить датчик
       teak = false
-
-      // выполнить обратные вызовы всех слайдеров
-      callbacks.forEach(cb => cb())
-
-      // включить датчик
-      teak = true
     }
   })
 }()
