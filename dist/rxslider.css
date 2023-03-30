@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.0.8
+ * rxslider.js v1.1.0
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -9,10 +9,17 @@
   --btnFontSize: 14px;
   --btnPosition: 20px;
   --btnPadding: .3em;
+  --btnDuration: .3s;
   --btnSize: 40px;
   --navSize: 14px;
   --navPosition: 25px;
-  --duration: .3s;
+}
+
+.rxslider[class*="rxslider--"] {
+  all: revert;
+}
+
+.rxslider[class] {
   position: relative;
   margin: 0 auto;
 }
@@ -59,7 +66,7 @@
   border: none;
   border-radius: 50%;
   background: var(--darkColor);
-  transition: opacity var(--duration);
+  transition: opacity var(--btnDuration);
   transform: translateY(-50%);
 }
 
@@ -77,6 +84,7 @@
 
 .rxslider__nav {
   position: absolute;
+  z-index: 1;
   bottom: -32px;
   left: 0;
   right: 0;
@@ -93,7 +101,7 @@
   margin: 0;
   border-radius: 50%;
   background: rgba(.2, .2, .2, .4);
-  transition: all var(--duration);
+  transition: all var(--btnDuration);
 }
 
 .rxslider__nav > button:hover {
@@ -109,8 +117,7 @@ button.rxslider__active {
   background: rgba(.2, .2, .2, .9);
 }
 
-
-@media (min-width: 480px) {
+@media (min-width: 640px) {
   .rxslider__prev,
   .rxslider__next {
     width: var(--btnSize);
