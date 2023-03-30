@@ -1,6 +1,6 @@
 {
   "name": "rxslider",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Responsive X-axis Slider",
   "main": "index.js",
   "scripts": {

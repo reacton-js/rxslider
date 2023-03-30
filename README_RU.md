@@ -2,7 +2,7 @@
 
 [EN](https://github.com/reacton-js/rxslider/blob/main/README.md) / [RU](https://github.com/reacton-js/rxslider/blob/main/README_RU.md)
 
-![rxslider](https://raw.githubusercontent.com/reacton-js/rxslider/main/rxslider/logo.jpg)
+![rxslider](https://raw.githubusercontent.com/reacton-js/rxslider/main/logo.jpg)
 
 [GitHub](https://github.com/reacton-js/rxslider) | [NpmJS](https://www.npmjs.com/package/rxslider) | [Пример](http://u92502bm.beget.tech/rxslider/)
 

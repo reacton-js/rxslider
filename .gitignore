@@ -1,7 +1,7 @@
-*.log
 command.txt
+gulpfile.js
 /package.json
-rxslider/README.md
-rxslider/README_RU.md
 node_modules/
+dist/*.md
+dist/logo.jpg
 src/
