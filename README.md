@@ -120,6 +120,8 @@ To limit the maximum width of any slider, simply add an inline style to it:
 
 ### Custom Effects
 
+<hr>
+
 By default, slides scroll without changing their appearance. A slider allows you to define [effects](http://u92502bm.beget.tech/rxslider/) applied to its slides.
 
 Slides are all child elements that are inside an element with the class «rxslider__slides»:
