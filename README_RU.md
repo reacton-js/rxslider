@@ -304,7 +304,7 @@ opacity: 1;
 
   /* ------- rxslider--three ------- */
   .rxslider--three {
-    --child-animation: three 3s infinite;;
+    --child-animation: three 3s infinite;
   }
   @keyframes three {
     0% {

@@ -304,7 +304,7 @@ In this way, you can create a large number of [different effects](http://u92502b
 
   /* ------- rxslider--three ------- */
   .rxslider--three {
-    --child-animation: three 3s infinite;;
+    --child-animation: three 3s infinite;
   }
   @keyframes three {
     0% {
