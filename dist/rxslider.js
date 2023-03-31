@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.1.0
+ * rxslider.js v1.1.2
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -141,7 +141,7 @@
         scrollView(slide)
 
         // если слайдеру добавлен эффектный класс
-        if (effect) {
+        if (effect && delay) {
           // добавить эффектный класс всем слайдам
           for (const child of slides.children) {
             child.classList.add(effect)
