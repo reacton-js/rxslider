@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.1.2
+ * rxslider.js v1.1.3
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -212,23 +212,6 @@
   }
 
   
-  // определить датчик выполнения
-  let teak = true
-
   // при изменении размера окна, вызвать обратные вызовы из хранилища
-  window.addEventListener('resize', () => {
-    // если датчик включен
-    if (teak) {
-      window.requestAnimationFrame(() => {
-        // выполнить обратные вызовы всех слайдеров
-        callbacks.forEach(cb => cb())
-
-        // включить датчик
-        teak = true
-      })
-
-      // выключить датчик
-      teak = false
-    }
-  })
+  window.addEventListener('resize', () => callbacks.forEach(cb => cb()))
 }()
