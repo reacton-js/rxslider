@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.1.3
+ * rxslider.js v1.2.0
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -15,6 +15,10 @@
   --navPosition: 25px;
 }
 
+.rxslider * {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .rxslider[class*="rxslider--"] {
   all: revert;
 }
@@ -24,17 +28,17 @@
   margin: 0 auto;
 }
 
-.rxslider * {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.rxslider__slides {
+.rxslider__slides[class] {
   display: flex;
   align-items: center;
   overflow: hidden;
 }
 
-.rxslider__slides > * {
+.rxslider__slides--move[class] {
+  cursor: grabbing;
+}
+
+.rxslider__slides[class] > * {
   min-width: 100%;
   display: flex;
   justify-content: center;

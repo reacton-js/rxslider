@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.1.3
+ * rxslider.js v1.2.0
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -64,6 +64,66 @@
     // вернуть текущий слайд
     return current
   }
+
+  // обновляет интервал прокрутки слайдов
+  function updateInterval(id, current, slides, nav, store, effect, back, time) {
+    // удалить текущий интервал
+    clearInterval(id)
+
+    // вернуть новый интервал прокрутки слайдов
+    return setInterval(() => current.el = moveSlide(current.el, slides, nav, store, effect, back), time)
+  }
+
+  
+  // возвращает функцию для обработчика перемещения указателя
+  function getPointerMove(coords, slides, prev, next, sens, subX = 0) {
+    return function pointerMove(e) {
+      // определить разность текущей и нажатой координаты по оси X
+      subX = e.offsetX - coords.downX
+
+      // если разность больше ширины слайдера делённой на чувствительность
+      if (subX > slides.offsetWidth / sens) {
+        // удалить обработчик перемещения указателя
+        slides.removeEventListener('pointermove', pointerMove)
+
+        // вызвать обработчик для кнопки Назад
+        prev.click()
+      }
+      // иначе, если разность меньше ширины слайдера делённой на чувствительность
+      else if (subX < -(slides.offsetWidth / sens)) {
+        // удалить обработчик перемещения указателя
+        slides.removeEventListener('pointermove', pointerMove)
+
+        // вызвать обработчик для кнопки Вперёд
+        next.click()
+      }
+    }
+  }
+
+  // возвращает функцию для обработчика нажатия курсора/пальца
+  function getEventDown(slides, pointerMove) {
+    return function(e) {
+      // отменить действие по умолчанию
+      e.preventDefault()
+
+      // добавить обработчик перемещения указателя для слайдера
+      slides.addEventListener('pointermove', pointerMove)
+
+      // добавить класс перемещения для слайдера
+      slides.classList.add('rxslider__slides--move')
+    }
+  }
+
+  // возвращает функцию для обработчика отпускания курсора/пальца
+  function getEventUp(slides, pointerMove)  {
+    return function() {
+      // удалить обработчик перемещения указателя для слайдера
+      slides.removeEventListener('pointermove', pointerMove)
+
+      // удалить класс перемещения для слайдера
+      slides.classList.remove('rxslider__slides--move')
+    }
+  }
   
 
   // определить хранилище обратных вызовов
@@ -83,10 +143,11 @@
     const back = slider.dataset.hasOwnProperty('back') // датчик обратного направления
     const effect = [...slider.classList].find(cls => regEffect.test(cls)) // эффектный класс
     const slides = slider.querySelector('.rxslider__slides') // родитель слайдов
-    const time = slider.dataset.time || 3000 // временной интервал
+    const time = parseFloat(slider.dataset.time) || 3000 // временной интервал
+    const sens = parseFloat(slider.dataset.sens) || 10 // чувствительность слайдера
     const store = new WeakMap() // хранилище кнопок навигации
-    
-    let current = slides.firstElementChild // текущий слайд
+    const current = { el: slides.firstElementChild } // текущий слайд
+
     let idInterval // ID интервала обновления
     let idTimeout // ID таймера удаления
     let delay // задержка удаления
@@ -94,10 +155,10 @@
     // если слайдеру добавлен эффектный класс
     if (effect) {
       // добавить эффектный класс текущему слайду
-      current.classList.add(effect)
+      current.el.classList.add(effect)
 
       // определить задержку для таймера удаления эффектных классов
-      delay = parseFloat(window.getComputedStyle(current).transitionDuration) * 1000 / 4
+      delay = parseFloat(window.getComputedStyle(current.el).transitionDuration) * 1000 / 4
     }
 
     // создать панель навигации
@@ -112,7 +173,7 @@
       const button = document.createElement('button')
 
       // если перебираемый в цикле слайд является текущим
-      if (slide === current) {
+      if (slide === current.el) {
         // добавить кнопке навигации активный класс
         button.classList.add('rxslider__active')
       }
@@ -121,15 +182,12 @@
       button.addEventListener('click', () => {
         // если автозапуск не отменялся
         if (!stop) {
-          // удалить текущий интервал
-          clearInterval(idInterval)
-
           // определить новый интервал прокрутки слайдов
-          idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, effect, back), time)
+          idInterval = updateInterval(idInterval, current, slides, nav, store, effect, back, time)
         }
 
         // сделать этот слайд текущим
-        current = slide
+        current.el = slide
 
         // удалить активный класс у всех кнопок навигации
         removeClass(nav, 'rxslider__active')
@@ -154,7 +212,7 @@
           }
 
           // удалить эффектный класс у всех слайдов кроме текущего
-          idTimeout = setTimeout(() => removeClass(slides, effect, current), delay)
+          idTimeout = setTimeout(() => removeClass(slides, effect, current.el), delay)
         }
       })
 
@@ -173,15 +231,12 @@
     prev.addEventListener('click', () => {
       // если автозапуск не отменялся
       if (!stop) {
-        // удалить текущий интервал
-        clearInterval(idInterval)
-
         // определить новый интервал прокрутки слайдов
-        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, effect, back), time)
+        idInterval = updateInterval(idInterval, current, slides, nav, store, effect, back, time)
       }
 
       // сдвинуть предыдущий слайд и сделать его текущим
-      current = moveSlide(current, slides, nav, store, effect, true)
+      current.el = moveSlide(current.el, slides, nav, store, effect, true)
     })
 
 
@@ -189,26 +244,51 @@
     next.addEventListener('click', () => {
       // если автозапуск не отменялся
       if (!stop) {
-        // удалить текущий интервал
-        clearInterval(idInterval)
-
         // определить новый интервал прокрутки слайдов
-        idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, effect, back), time)
+        idInterval = updateInterval(idInterval, current, slides, nav, store, effect, back, time)
       }
 
       // сдвинуть следующий слайд и сделать его текущим
-      current = moveSlide(current, slides, nav, store, effect)
+      current.el = moveSlide(current.el, slides, nav, store, effect)
     })
+
+
+    // определить объект для нажатой координаты
+    const coords = { downX: 0 }
+
+    // определить функцию для обработчика перемещения указателя
+    const pointerMove = getPointerMove(coords, slides, prev, next, sens)
+
+    // определить функцию для обработчика нажатия курсора/пальца
+    const eventDown = getEventDown(slides, pointerMove)
+
+    // определить функцию для обработчика отпускания курсора/пальца
+    const eventUp = getEventUp(slides, pointerMove)
+
+    // определить нажатую координату по оси X во время активации курсора
+    slides.addEventListener('pointerdown', e => coords.downX = e.offsetX)
+    
+    // определить обработчик нажатия кнопки мышки для слайдера
+    slides.addEventListener('mousedown', eventDown)
+
+    // определить обработчик касания пальца для слайдера
+    slides.addEventListener('touchstart', eventDown)
+
+    // определить обработчик отпускания кнопки мышки для слайдера
+    slides.addEventListener('mouseup', eventUp)
+    
+    // определить обработчик отпускания пальца для слайдера
+    slides.addEventListener('touchend', eventUp)
 
 
     // если автозапуск не отменялся
     if (!stop) {
-      // определить интервал прокрутки слайдов
-      idInterval = setInterval(() => current = moveSlide(current, slides, nav, store, effect, back), time)
+      // определить новый интервал прокрутки слайдов
+      idInterval = updateInterval(idInterval, current, slides, nav, store, effect, back, time)
     }
 
     // добавить обратный вызов в хранилище
-    callbacks.add(() => scrollView(current, 'instant'))
+    callbacks.add(() => scrollView(current.el, 'instant'))
   }
 
   

@@ -88,7 +88,7 @@ You can override them after including the base slider style file:
 
 <br>
 
-The slider takes three attributes. The ***data-stop*** attribute without a value disables auto-scrolling:
+The slider takes four attributes. The ***data-stop*** attribute without a value disables auto-scrolling:
 
 ```html
 <div class="rxslider" data-stop>
@@ -104,6 +104,12 @@ The ***data-time*** attribute specifies the number of milliseconds the slider wi
 
 ```html
 <div class="rxslider" data-time="1500">
+```
+
+The ***data-sens*** attribute determines how sensitive the slider is when dragging to the next/prev slide. By default, this value is 10. The higher this value, the less distance you need to drag the slide:
+
+```html
+<div class="rxslider" data-sens="30">
 ```
 
 <br>
