@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.2
+ * rxslider.js v1.2.3
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -78,7 +78,7 @@
   // возвращает функцию для обработчика перемещения указателя
   function getPointerMove(coords, slides, prev, next, sens, subX = 0) {
     return function pointerMove(e) {
-      // определить разность текущей и нажатой координаты по оси X
+      // определить разность текущей и сохранённой координаты
       subX = e.offsetX - coords.downX
 
       // если разность больше ширины слайдера делённой на чувствительность
@@ -100,13 +100,14 @@
     }
   }
 
-  // возвращает функцию для обработчика нажатия кнопки/пальца
-  function getEventDown(slides, pointerMove) {
+  // возвращает функцию для обработчика нажатия указателя
+  function getEventDown(coords, slides, pointerMove) {
     return function(e) {
-      // если вызывается событие нажатия кнопки мышки
-      if (e.type === 'mousedown') {
-        e.preventDefault() // отменить действие по умолчанию
-      }
+      // отменить действие по умолчанию
+      e.preventDefault()
+      
+      // определить координату по оси X
+      coords.downX = e.offsetX
 
       // добавить класс перемещения для слайдера
       slides.classList.add('rxslider__slides--move')
@@ -116,7 +117,7 @@
     }
   }
 
-  // возвращает функцию для обработчика отпускания кнопки/пальца
+  // возвращает функцию для обработчика отпускания указателя
   function getEventUp(slides, pointerMove)  {
     return function() {
       // удалить класс перемещения для слайдера
@@ -260,27 +261,12 @@
 
     // определить функцию для обработчика перемещения указателя
     const pointerMove = getPointerMove(coords, slides, prev, next, sens)
-
-    // определить функцию для обработчика нажатия кнопки/пальца
-    const eventDown = getEventDown(slides, pointerMove)
-
-    // определить функцию для обработчика отпускания кнопки/пальца
-    const eventUp = getEventUp(slides, pointerMove)
-
-    // определить нажатую координату по оси X во время активации курсора
-    slides.addEventListener('pointerdown', e => coords.downX = e.offsetX)
     
-    // определить обработчик нажатия кнопки мышки для слайдера
-    slides.addEventListener('mousedown', eventDown)
+    // определить обработчик нажатия указателя для слайдера
+    slides.addEventListener('pointerdown', getEventDown(coords, slides, pointerMove))
 
-    // определить обработчик касания пальца для слайдера
-    slides.addEventListener('touchstart', eventDown)
-
-    // определить обработчик отпускания кнопки мышки для слайдера
-    slides.addEventListener('mouseup', eventUp)
-    
-    // определить обработчик отпускания пальца для слайдера
-    slides.addEventListener('touchend', eventUp)
+    // определить обработчик отпускания указателя для слайдера
+    slides.addEventListener('pointerup', getEventUp(slides, pointerMove))
 
 
     // если автозапуск не отменялся
