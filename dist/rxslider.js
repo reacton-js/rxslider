@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.0
+ * rxslider.js v1.2.1
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -100,28 +100,30 @@
     }
   }
 
-  // возвращает функцию для обработчика нажатия курсора/пальца
+  // возвращает функцию для обработчика нажатия кнопки/пальца
   function getEventDown(slides, pointerMove) {
     return function(e) {
-      // отменить действие по умолчанию
-      e.preventDefault()
-
-      // добавить обработчик перемещения указателя для слайдера
-      slides.addEventListener('pointermove', pointerMove)
+      // если вызывается событие нажатия кнопки мышки
+      if (e.type === 'mousedown') {
+        e.preventDefault() // отменить действие по умолчанию
+      }
 
       // добавить класс перемещения для слайдера
       slides.classList.add('rxslider__slides--move')
+
+      // добавить обработчик перемещения указателя для слайдера
+      slides.addEventListener('pointermove', pointerMove)
     }
   }
 
-  // возвращает функцию для обработчика отпускания курсора/пальца
+  // возвращает функцию для обработчика отпускания кнопки/пальца
   function getEventUp(slides, pointerMove)  {
     return function() {
-      // удалить обработчик перемещения указателя для слайдера
-      slides.removeEventListener('pointermove', pointerMove)
-
       // удалить класс перемещения для слайдера
       slides.classList.remove('rxslider__slides--move')
+      
+      // удалить обработчик перемещения указателя для слайдера
+      slides.removeEventListener('pointermove', pointerMove)
     }
   }
   
@@ -145,8 +147,8 @@
     const slides = slider.querySelector('.rxslider__slides') // родитель слайдов
     const time = parseFloat(slider.dataset.time) || 3000 // временной интервал
     const sens = parseFloat(slider.dataset.sens) || 10 // чувствительность слайдера
-    const store = new WeakMap() // хранилище кнопок навигации
     const current = { el: slides.firstElementChild } // текущий слайд
+    const store = new WeakMap() // хранилище кнопок навигации
 
     let idInterval // ID интервала обновления
     let idTimeout // ID таймера удаления
@@ -259,10 +261,10 @@
     // определить функцию для обработчика перемещения указателя
     const pointerMove = getPointerMove(coords, slides, prev, next, sens)
 
-    // определить функцию для обработчика нажатия курсора/пальца
+    // определить функцию для обработчика нажатия кнопки/пальца
     const eventDown = getEventDown(slides, pointerMove)
 
-    // определить функцию для обработчика отпускания курсора/пальца
+    // определить функцию для обработчика отпускания кнопки/пальца
     const eventUp = getEventUp(slides, pointerMove)
 
     // определить нажатую координату по оси X во время активации курсора

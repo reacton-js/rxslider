@@ -1,12 +1,12 @@
 /*!
- * rxslider.js v1.2.0
+ * rxslider.js v1.2.1
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
 .rxslider {
   --lightColor: #fff; 
   --darkColor: #222;
-  --btnFontSize: 14px;
+  --btnFontSize: 15px;
   --btnPosition: 20px;
   --btnPadding: .3em;
   --btnDuration: .3s;
@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .rxslider__slides--move[class] {
@@ -63,7 +64,9 @@
   margin: 0;
   padding: 0;
   padding-right: var(--btnPadding);
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1em;
+  font-family: monospace;
   color: var(--lightColor);
   opacity: .5;
   cursor: pointer;
