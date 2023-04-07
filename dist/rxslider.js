@@ -266,7 +266,7 @@
     // определить функцию для обработчика перемещения указателя внутри слайдера
     const pointerMove = getPointerMove(data, slides, prev, next, sens, removeEvents)
     
-    // определить обработчик нажатия указателя внутри слайдера
+    // добавить обработчик нажатия указателя внутри слайдера
     slides.addEventListener('pointerdown', getEventDown(data, slides, pointerMove, removeEvents))
 
 
