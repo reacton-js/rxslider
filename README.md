@@ -70,7 +70,7 @@ The basic slider settings are made through CSS variables in the *rxslider.css* f
   --btnSize: 40px;
   --navSize: 14px;
   --navUpper: 25px;
-  --navLower: -32px;
+  --navLower: -35px;
 }
 ```
 

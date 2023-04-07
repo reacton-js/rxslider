@@ -70,7 +70,7 @@
   --btnSize: 40px;
   --navSize: 14px;
   --navUpper: 25px;
-  --navLower: -32px;
+  --navLower: -35px;
 }
 ```
 

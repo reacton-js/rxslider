@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.5
+ * rxslider.js v1.2.6
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -76,23 +76,23 @@
 
   
   // возвращает функцию для обработчика перемещения указателя
-  function getPointerMove(data, slides, prev, next, sens, subX = 0) {
+  function getPointerMove(data, slides, prev, next, sens, removeEvents, subX = 0) {
     return function pointerMove(e) {
       // определить разность текущей и сохранённой координаты
       subX = e.offsetX - data.downX
 
       // если разность больше ширины слайдера делённой на чувствительность
       if (subX > slides.offsetWidth / sens) {
-        // удалить обработчик перемещения указателя
-        slides.removeEventListener('pointermove', pointerMove)
+        // вызвать функцию для удаления обработчиков указателя
+        removeEvents()
 
         // вызвать обработчик для кнопки Назад
         prev.click()
       }
       // иначе, если разность меньше ширины слайдера делённой на чувствительность
       else if (subX < -(slides.offsetWidth / sens)) {
-        // удалить обработчик перемещения указателя
-        slides.removeEventListener('pointermove', pointerMove)
+        // вызвать функцию для удаления обработчиков указателя
+        removeEvents()
 
         // вызвать обработчик для кнопки Вперёд
         next.click()
@@ -101,7 +101,7 @@
   }
 
   // возвращает функцию для обработчика нажатия указателя
-  function getEventDown(data, slides, pointerMove) {
+  function getEventDown(data, slides, pointerMove, removeEvents) {
     return function(e) {
       // отменить действие по умолчанию
       e.preventDefault()
@@ -109,8 +109,14 @@
       // определить координату по оси X
       data.downX = e.offsetX
 
-      // добавить обработчик перемещения указателя для слайдера
+      // добавить обработчик перемещения указателя внутри слайдера
       slides.addEventListener('pointermove', pointerMove)
+
+      // добавить обработчик отпускания указателя внутри слайдера
+      slides.addEventListener('pointerup', removeEvents)
+
+      // добавить обработчик выхода указателя за границы слайдера
+      slides.addEventListener('pointerleave', removeEvents)
     }
   }
   
@@ -245,17 +251,23 @@
     })
 
 
-    // определить функцию для обработчика перемещения указателя
-    const pointerMove = getPointerMove(data, slides, prev, next, sens)
+    // определить функцию для удаления обработчиков указателя
+    const removeEvents = () => {
+      // удалить обработчик перемещения указателя внутри слайдера
+      slides.removeEventListener('pointermove', pointerMove)
+
+      // удалить обработчик отпускания указателя внутри слайдера
+      slides.removeEventListener('pointerup', removeEvents)
+
+      // удалить обработчик выхода указателя за границы слайдера
+      slides.removeEventListener('pointerleave', removeEvents)
+    }
+
+    // определить функцию для обработчика перемещения указателя внутри слайдера
+    const pointerMove = getPointerMove(data, slides, prev, next, sens, removeEvents)
     
-    // определить обработчик нажатия указателя для слайдера
-    slides.addEventListener('pointerdown', getEventDown(data, slides, pointerMove))
-
-    // при отпускании указателя, удалить обработчик перемещения для слайдера
-    slides.addEventListener('pointerup', () => slides.removeEventListener('pointermove', pointerMove))
-
-    // при выходе указателя за границы, удалить обработчик перемещения для слайдера
-    slides.addEventListener('pointerleave', () => slides.removeEventListener('pointermove', pointerMove))
+    // определить обработчик нажатия указателя внутри слайдера
+    slides.addEventListener('pointerdown', getEventDown(data, slides, pointerMove, removeEvents))
 
 
     // если автозапуск не отменялся
