@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.4
+ * rxslider.js v1.2.5
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -109,22 +109,8 @@
       // определить координату по оси X
       data.downX = e.offsetX
 
-      // добавить класс перемещения для слайдера
-      slides.classList.add('rxslider__slides--move')
-
       // добавить обработчик перемещения указателя для слайдера
       slides.addEventListener('pointermove', pointerMove)
-    }
-  }
-
-  // возвращает функцию для обработчика отпускания указателя
-  function getEventUp(slides, pointerMove)  {
-    return function() {
-      // удалить класс перемещения для слайдера
-      slides.classList.remove('rxslider__slides--move')
-      
-      // удалить обработчик перемещения указателя для слайдера
-      slides.removeEventListener('pointermove', pointerMove)
     }
   }
   
@@ -265,8 +251,11 @@
     // определить обработчик нажатия указателя для слайдера
     slides.addEventListener('pointerdown', getEventDown(data, slides, pointerMove))
 
-    // определить обработчик отпускания указателя для слайдера
-    slides.addEventListener('pointerup', getEventUp(slides, pointerMove))
+    // при отпускании указателя, удалить обработчик перемещения для слайдера
+    slides.addEventListener('pointerup', () => slides.removeEventListener('pointermove', pointerMove))
+
+    // при выходе указателя за границы, удалить обработчик перемещения для слайдера
+    slides.addEventListener('pointerleave', () => slides.removeEventListener('pointermove', pointerMove))
 
 
     // если автозапуск не отменялся

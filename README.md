@@ -63,13 +63,14 @@ The basic slider settings are made through CSS variables in the *rxslider.css* f
 .rxslider {
   --lightColor: #fff; 
   --darkColor: #222;
-  --btnFontSize: 14px;
+  --btnFontSize: 15px;
   --btnPosition: 20px;
   --btnPadding: .3em;
   --btnDuration: .3s;
   --btnSize: 40px;
   --navSize: 14px;
-  --navPosition: 25px;
+  --navUpper: 25px;
+  --navLower: -32px;
 }
 ```
 
