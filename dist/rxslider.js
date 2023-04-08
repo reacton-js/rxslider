@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.6
+ * rxslider.js v1.2.8
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -80,6 +80,9 @@
     return function pointerMove(e) {
       // определить разность текущей и сохранённой координаты
       subX = e.offsetX - data.downX
+
+      // прокрутить слайды на один пиксель влево/вправо
+      slides.scrollLeft += subX > 0 ? -1 : subX < 0 ? 1 : 0
 
       // если разность больше ширины слайдера делённой на чувствительность
       if (subX > slides.offsetWidth / sens) {
@@ -253,6 +256,9 @@
 
     // определить функцию для удаления обработчиков указателя
     const removeEvents = () => {
+      // сдвинуть текущий слайд к стартовой позиции
+      scrollView(data.current)
+      
       // удалить обработчик перемещения указателя внутри слайдера
       slides.removeEventListener('pointermove', pointerMove)
 
