@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.2.8
+ * rxslider.js v1.2.9
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -255,9 +255,9 @@
 
 
     // определить функцию для удаления обработчиков указателя
-    const removeEvents = () => {
+    const removeEvents = e => {
       // сдвинуть текущий слайд к стартовой позиции
-      scrollView(data.current)
+      if (e) scrollView(data.current)
       
       // удалить обработчик перемещения указателя внутри слайдера
       slides.removeEventListener('pointermove', pointerMove)
