@@ -27,6 +27,11 @@
       overflow-x: auto;
     }
 
+    /* ------- rxslider__active ------- */
+    .rxslider:nth-of-type(2) .rxslider__active {
+      transform: scale(1.2) rotate(5deg);
+    }
+
     /* ------- rxslider--one ------- */
     .rxslider--one {
       --transition: all 2s;
@@ -70,6 +75,45 @@
 <body>
 
   <h3>rxslider</h3>
+
+  <div class="rxslider" style="max-width: 800px;">
+    <button class="rxslider__prev">≺</button>
+    <div class="rxslider__slides">
+      <div>
+        <img src="img/1.jpg" alt="1">
+      </div>
+      <div>
+        <img src="img/2.jpg" alt="2">
+      </div>
+      <div>
+        <img src="img/3.jpg" alt="3">
+      </div>
+      <div>
+        <img src="img/4.jpg" alt="4">
+      </div>
+      <div>
+        <img src="img/5.jpg" alt="5">
+      </div>
+      <div>
+        <img src="img/6.jpg" alt="6">
+      </div>
+      <div>
+        <img src="img/7.jpg" alt="7">
+      </div>
+    </div>
+    <button class="rxslider__next">≻</button>
+  </div>
+
+  <br>
+  <br>
+
+  <h3>rxslider__active</h3>
+
+  <pre>
+    .rxslider__active {
+      transform: scale(1.2) rotate(5deg);
+    }
+  </pre>
 
   <div class="rxslider" style="max-width: 800px;">
     <button class="rxslider__prev">≺</button>

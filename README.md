@@ -63,14 +63,14 @@ The basic slider settings are made through CSS variables in the *rxslider.css* f
 .rxslider {
   --lightColor: #fff; 
   --darkColor: #222;
+  --btnSize: 40px;
   --btnFontSize: 15px;
   --btnPosition: 20px;
   --btnPadding: .3em;
-  --btnDuration: .3s;
-  --btnSize: 40px;
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
+  --duration: .3s;
 }
 ```
 
@@ -86,6 +86,23 @@ You can override them after including the base slider style file:
   </style>
 </head>
 ```
+
+<br>
+
+The currently active slide is assigned the class «rxslider__active». This allows you to create [simple effects](http://u92502bm.beget.tech/rxslider/) for slides, for example:
+
+```html
+...
+  <link rel="stylesheet" href="rxslider.min.css">
+  <style>
+    .rxslider__active {
+      transform: scale(1.2) rotate(5deg);
+    }
+  </style>
+</head>
+```
+
+For an active navigation button, the class «rxslider__nav-active» is used.
 
 <br>
 
@@ -129,7 +146,7 @@ To limit the maximum width of any slider, simply add an inline style to it:
 
 <hr>
 
-By default, slides scroll without changing their appearance. A slider allows you to define [effects](http://u92502bm.beget.tech/rxslider/) applied to its slides.
+By default, slides scroll without changing their appearance. A slider allows you to define [complex effects](http://u92502bm.beget.tech/rxslider/) applied to its slides.
 
 Slides are all child elements that are inside an element with the class «rxslider__slides»:
 
@@ -290,44 +307,48 @@ Variables define property values before assigning a special class to the active 
 In this way, you can create a large number of [different effects](http://u92502bm.beget.tech/rxslider/), as shown below:
 
 ```html
-<style>
-  /* ------- rxslider--one ------- */
-  .rxslider--one {
-    --transition: all 2s;
-    --transform: rotate(0) scale(.1);
-    --transform-origin: 80% 20%;
-    --opacity: .1;
+...
+  <link rel="stylesheet" href="rxslider.min.css">
+  <link rel="stylesheet" href="rxslider-vars.min.css">
+  <style>
+    /* ------- rxslider--one ------- */
+    .rxslider--one {
+      --transition: all 2s;
+      --transform: rotate(0) scale(.1);
+      --transform-origin: 80% 20%;
+      --opacity: .1;
 
-    transform: rotate(360deg) scale(1);
-    opacity: 1;
-  }
-
-  /* ------- rxslider--two ------- */
-  .rxslider--two {
-    --parent-perspective: 400px;
-    --transition: all 2s;
-    --transform: rotateX(0) scale(0);
-
-    transform: rotateX(360deg) scale(1);
-  }
-
-  /* ------- rxslider--three ------- */
-  .rxslider--three {
-    --child-animation: three 3s infinite;
-  }
-  @keyframes three {
-    0% {
-      opacity: 0;
-      transform: scale(1.5);
-    }
-    50% {
+      transform: rotate(360deg) scale(1);
       opacity: 1;
-      transform: scale(1);
     }
-    100% {
-      opacity: 0;
-      transform: scale(1.5);
+
+    /* ------- rxslider--two ------- */
+    .rxslider--two {
+      --parent-perspective: 400px;
+      --transition: all 2s;
+      --transform: rotateX(0) scale(0);
+
+      transform: rotateX(360deg) scale(1);
     }
-  }
-</style>
+
+    /* ------- rxslider--three ------- */
+    .rxslider--three {
+      --child-animation: three 3s infinite;
+    }
+    @keyframes three {
+      0% {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+    }
+  </style>
+</head>
 ```

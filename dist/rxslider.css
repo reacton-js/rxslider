@@ -1,46 +1,50 @@
 /*!
- * rxslider.js v1.2.9
+ * rxslider.js v1.4.0
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
 .rxslider {
   --lightColor: #fff; 
   --darkColor: #222;
+  --btnSize: 40px;
   --btnFontSize: 15px;
   --btnPosition: 20px;
   --btnPadding: .3em;
-  --btnDuration: .3s;
-  --btnSize: 40px;
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
+  --duration: .3s;
 }
 
 .rxslider * {
   -webkit-tap-highlight-color: transparent;
 }
 
-.rxslider[class*="rxslider--"] {
+[class*="rxslider--"] {
   all: revert;
 }
 
-.rxslider[class] {
+.rxslider {
   position: relative;
   margin: 0 auto;
 }
 
-.rxslider__slides[class] {
+.rxslider__slides {
   display: flex;
   align-items: center;
   overflow: hidden;
   touch-action: pan-y;
 }
 
-.rxslider__slides[class] > * {
+.rxslider__slides > * {
   min-width: 100%;
   display: flex;
   justify-content: center;
   position: relative;
+}
+
+.rxslider:not([class*="rxslider--"]) .rxslider__slides > * {
+  transition: all var(--duration);
 }
 
 .rxslider__slides img {
@@ -70,7 +74,7 @@
   border: none;
   border-radius: 50%;
   background: var(--darkColor);
-  transition: opacity var(--btnDuration);
+  transition: all var(--duration);
   transform: translateY(-50%);
 }
 
@@ -105,7 +109,7 @@
   margin: 0;
   border-radius: 50%;
   background: rgba(.2, .2, .2, .4);
-  transition: all var(--btnDuration);
+  transition: all var(--duration);
 }
 
 .rxslider__nav > button:hover {
@@ -117,7 +121,8 @@
   margin-left: 15px;
 }
 
-button.rxslider__active {
+button.rxslider__nav-active,
+button.rxslider__nav-active:focus {
   background: rgba(.2, .2, .2, .9);
 }
 

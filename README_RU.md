@@ -63,14 +63,14 @@
 .rxslider {
   --lightColor: #fff; 
   --darkColor: #222;
+  --btnSize: 40px;
   --btnFontSize: 15px;
   --btnPosition: 20px;
   --btnPadding: .3em;
-  --btnDuration: .3s;
-  --btnSize: 40px;
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
+  --duration: .3s;
 }
 ```
 
@@ -86,6 +86,23 @@
   </style>
 </head>
 ```
+
+<br>
+
+Активному в данный момент слайду, присваивается класс «rxslider__active». Это позволяет создавать для слайдов [простые эффекты](http://u92502bm.beget.tech/rxslider/), например:
+
+```html
+...
+  <link rel="stylesheet" href="rxslider.min.css">
+  <style>
+    .rxslider__active {
+      transform: scale(1.2) rotate(5deg);
+    }
+  </style>
+</head>
+```
+
+Для активной кнопки навигации, применяется класс «rxslider__nav-active».
 
 <br>
 
@@ -129,7 +146,7 @@
 
 <hr>
 
-По умолчанию, слайды прокручиваются без изменения своего внешнего вида. Слайдер позволяет определять [эффекты](http://u92502bm.beget.tech/rxslider/), применяемые к его слайдам.
+По умолчанию, слайды прокручиваются без изменения своего внешнего вида. Слайдер позволяет определять [сложные эффекты](http://u92502bm.beget.tech/rxslider/), применяемые к его слайдам.
 
 Слайдами считаются все дочерние элементы, которые находятся внутри элемента с классом «rxslider__slides»:
 
@@ -290,44 +307,48 @@ opacity: 1;
 Таким образом, можно создавать большое количество [различных эффектов](http://u92502bm.beget.tech/rxslider/), как показано ниже:
 
 ```html
-<style>
-  /* ------- rxslider--one ------- */
-  .rxslider--one {
-    --transition: all 2s;
-    --transform: rotate(0) scale(.1);
-    --transform-origin: 80% 20%;
-    --opacity: .1;
+...
+  <link rel="stylesheet" href="rxslider.min.css">
+  <link rel="stylesheet" href="rxslider-vars.min.css">
+  <style>
+    /* ------- rxslider--one ------- */
+    .rxslider--one {
+      --transition: all 2s;
+      --transform: rotate(0) scale(.1);
+      --transform-origin: 80% 20%;
+      --opacity: .1;
 
-    transform: rotate(360deg) scale(1);
-    opacity: 1;
-  }
-
-  /* ------- rxslider--two ------- */
-  .rxslider--two {
-    --parent-perspective: 400px;
-    --transition: all 2s;
-    --transform: rotateX(0) scale(0);
-
-    transform: rotateX(360deg) scale(1);
-  }
-
-  /* ------- rxslider--three ------- */
-  .rxslider--three {
-    --child-animation: three 3s infinite;
-  }
-  @keyframes three {
-    0% {
-      opacity: 0;
-      transform: scale(1.5);
-    }
-    50% {
+      transform: rotate(360deg) scale(1);
       opacity: 1;
-      transform: scale(1);
     }
-    100% {
-      opacity: 0;
-      transform: scale(1.5);
+
+    /* ------- rxslider--two ------- */
+    .rxslider--two {
+      --parent-perspective: 400px;
+      --transition: all 2s;
+      --transform: rotateX(0) scale(0);
+
+      transform: rotateX(360deg) scale(1);
     }
-  }
-</style>
+
+    /* ------- rxslider--three ------- */
+    .rxslider--three {
+      --child-animation: three 3s infinite;
+    }
+    @keyframes three {
+      0% {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+    }
+  </style>
+</head>
 ```
