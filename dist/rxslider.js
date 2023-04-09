@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.4.1
+ * rxslider.js v1.4.2
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -280,6 +280,9 @@
     const removeEvents = e => {
       // если функция вызывается как обработчик
       if (e) {
+        // отменить действие по умолчанию
+        e.preventDefault()
+        
         // если автозапуск не отменялся
         if (!stop) {
           // определить новый интервал прокрутки слайдов
