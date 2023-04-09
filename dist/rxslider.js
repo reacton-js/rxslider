@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.4.0
+ * rxslider.js v1.4.1
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
