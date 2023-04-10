@@ -1,11 +1,19 @@
 /*!
- * rxslider.js v1.4.3
+ * rxslider.js v1.4.4
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
 'use strict'
 
 !function() {
+  // перемещает скролл к позиции слайда
+  function scrollView(slide, behavior = 'smooth') {
+    slide.parentElement.scrollTo({
+      left: slide.offsetLeft,
+      behavior
+    })
+  }
+
   // удаляет класс у всех дочерних элементов кроме игнорируемых
   function removeClass(parent, name, ignored) {
     for (const child of parent.children) {
@@ -15,18 +23,26 @@
     }
   }
 
-  // перемещает скролл к позиции слайда
-  function scrollView(slide, behavior = 'smooth') {
-    slide.parentElement.scrollTo({
-      left: slide.offsetLeft,
-      behavior
-    })
+  // устанавливает активный класс для слайдов и кнопок навигации
+  function setClass(current, slides, nav, store) {
+    // удалить активный класс у всех слайдов
+    removeClass(slides, 'rxslider__active')
+
+    // добавить текущему слайду активный класс
+    current.classList.add('rxslider__active')
+
+    // удалить активный класс у всех кнопок навигации
+    removeClass(nav, 'rxslider__nav-active')
+
+    // добавить кнопке навигации из хранилища активный класс
+    store.get(current).classList.add('rxslider__nav-active')
   }
 
+
   // перемещает слайд в зависимости от направления
-  function moveSlide(current, slides, nav, store, effect, isPrev) {
+  function moveSlide(data, slides, nav, store, effect, isPrev) {
     // получить предыдущий/следующий слайд
-    current = isPrev ? current.previousElementSibling : current.nextElementSibling
+    let current = isPrev ? data.current.previousElementSibling : data.current.nextElementSibling
     
     // если слайд не получен
     if (!current) {
@@ -43,17 +59,8 @@
       current = slide
     }
 
-    // удалить активный класс у всех слайдов
-    removeClass(slides, 'rxslider__active')
-
-    // добавить текущему слайду активный класс
-    current.classList.add('rxslider__active')
-
-    // удалить активный класс у всех кнопок навигации
-    removeClass(nav, 'rxslider__nav-active')
-
-    // добавить кнопке навигации из хранилища активный класс
-    store.get(current).classList.add('rxslider__nav-active')
+    // установить активный класс для слайдов и кнопок навигации
+    setClass(current, slides, nav, store)
 
     // сдвинуть текущий слайд к стартовой позиции
     scrollView(current)
@@ -67,8 +74,8 @@
       current.classList.add(effect)
     }
 
-    // вернуть текущий слайд
-    return current
+    // сохранить текущий слайд в свойстве объекта
+    data.current = current
   }
 
   // обновляет интервал прокрутки слайдов
@@ -78,8 +85,8 @@
       clearInterval(data.idInterval) // удалить текущий интервал
     }
 
-    // вернуть новый интервал прокрутки слайдов
-    return setInterval(() => data.current = moveSlide(data.current, slides, nav, store, effect, back), time)
+    // сохранить новый интервал в свойстве объекта
+    data.idInterval = setInterval(() => moveSlide(data, slides, nav, store, effect, back), time)
   }
 
   
@@ -200,24 +207,15 @@
         // если автозапуск не отменялся
         if (!stop) {
           // определить новый интервал прокрутки слайдов
-          data.idInterval = updateInterval(data, slides, nav, store, effect, back, time)
+          updateInterval(data, slides, nav, store, effect, back, time)
         }
 
         // сделать этот слайд текущим
         data.current = slide
 
-        // удалить активный класс у всех слайдов
-        removeClass(slides, 'rxslider__active')
-
-        // добавить текущему слайду активный класс
-        data.current.classList.add('rxslider__active')
-
-        // удалить активный класс у всех кнопок навигации
-        removeClass(nav, 'rxslider__nav-active')
-
-        // добавить кнопке навигации активный класс
-        button.classList.add('rxslider__nav-active')
-
+        // установить активный класс для слайдов и кнопок навигации
+        setClass(data.current, slides, nav, store)
+        
         // сдвинуть текущий слайд к стартовой позиции
         scrollView(slide)
 
@@ -255,11 +253,11 @@
       // если автозапуск не отменялся
       if (!stop) {
         // определить новый интервал прокрутки слайдов
-        data.idInterval = updateInterval(data, slides, nav, store, effect, back, time)
+        updateInterval(data, slides, nav, store, effect, back, time)
       }
 
       // сдвинуть предыдущий слайд и сделать его текущим
-      data.current = moveSlide(data.current, slides, nav, store, effect, true)
+      moveSlide(data, slides, nav, store, effect, true)
     })
 
 
@@ -268,11 +266,11 @@
       // если автозапуск не отменялся
       if (!stop) {
         // определить новый интервал прокрутки слайдов
-        data.idInterval = updateInterval(data, slides, nav, store, effect, back, time)
+        updateInterval(data, slides, nav, store, effect, back, time)
       }
 
       // сдвинуть следующий слайд и сделать его текущим
-      data.current = moveSlide(data.current, slides, nav, store, effect)
+      moveSlide(data, slides, nav, store, effect)
     })
 
 
@@ -283,7 +281,7 @@
         // если автозапуск не отменялся
         if (!stop) {
           // определить новый интервал прокрутки слайдов
-          data.idInterval = updateInterval(data, slides, nav, store, effect, back, time)
+          updateInterval(data, slides, nav, store, effect, back, time)
         }
 
         // сдвинуть текущий слайд к стартовой позиции
@@ -310,7 +308,7 @@
     // если автозапуск не отменялся
     if (!stop) {
       // определить новый интервал прокрутки слайдов
-      data.idInterval = updateInterval(data, slides, nav, store, effect, back, time)
+      updateInterval(data, slides, nav, store, effect, back, time)
     }
 
     // добавить обратный вызов в хранилище
