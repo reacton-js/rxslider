@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.4.5
+ * rxslider.js v1.4.6
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -105,7 +105,7 @@
         removeEvents()
 
         // вызвать обработчик для кнопки Назад
-        prev.click()
+        prev.dispatchEvent(new PointerEvent('pointerdown'))
       }
       // иначе, если разность меньше ширины слайдера делённой на чувствительность
       else if (subX < -(slides.offsetWidth / sens)) {
@@ -113,7 +113,7 @@
         removeEvents()
 
         // вызвать обработчик для кнопки Вперёд
-        next.click()
+        next.dispatchEvent(new PointerEvent('pointerdown'))
       }
     }
   }
@@ -212,7 +212,7 @@
       }
 
       // определить обработчик для кнопки навигации
-      button.addEventListener('click', () => {
+      button.addEventListener('pointerdown', () => {
         // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
         stop || updateInterval(data, slides, nav, store, effect, back, time)
 
@@ -255,10 +255,10 @@
     
 
     // определить обработчик для кнопки Назад
-    prev.addEventListener('click', () => onClick(data, slides, nav, store, effect, back, time, stop, true))
+    prev.addEventListener('pointerdown', () => onClick(data, slides, nav, store, effect, back, time, stop, true))
 
     // определить обработчик для кнопки Вперёд
-    next.addEventListener('click', () => onClick(data, slides, nav, store, effect, back, time, stop))
+    next.addEventListener('pointerdown', () => onClick(data, slides, nav, store, effect, back, time, stop))
 
 
     // определить функцию для удаления обработчиков указателя
