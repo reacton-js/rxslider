@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.4.4
+ * rxslider.js v1.4.5
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -13,7 +13,8 @@
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
-  --duration: .3s;
+  --durationHover: .3s;
+  --transitionActive: all .5s;
 }
 
 .rxslider * {
@@ -44,7 +45,7 @@
 }
 
 .rxslider:not([class*="rxslider--"]) .rxslider__slides > * {
-  transition: all var(--duration);
+  transition: var(--transitionActive);
 }
 
 .rxslider__slides img {
@@ -74,7 +75,7 @@
   border: none;
   border-radius: 50%;
   background: var(--darkColor);
-  transition: all var(--duration);
+  transition: all var(--durationHover);
   transform: translateY(-50%);
 }
 
@@ -104,7 +105,7 @@
   margin: 0;
   border-radius: 50%;
   background: rgba(.2, .2, .2, .4);
-  transition: all var(--duration);
+  transition: all var(--durationHover);
 }
 
 .rxslider__nav > button + button {

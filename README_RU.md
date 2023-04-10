@@ -70,7 +70,8 @@
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
-  --duration: .3s;
+  --durationHover: .3s;
+  --transitionActive: all .5s;
 }
 ```
 

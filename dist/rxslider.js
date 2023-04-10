@@ -1,5 +1,5 @@
 /*!
- * rxslider.js v1.4.4
+ * rxslider.js v1.4.5
  * (c) 2022-2023 | github.com/reacton-js
  * Released under the MIT License.
  */
@@ -143,6 +143,15 @@
       slides.addEventListener('pointerleave', removeEvents)
     }
   }
+
+  // вызывается в обработчике кнопок Назад/Вперёд
+  function onClick(data, slides, nav, store, effect, back, time, stop, isPrev) {
+    // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
+    stop || updateInterval(data, slides, nav, store, effect, back, time)
+
+    // сдвинуть следующий слайд и сделать его текущим
+    moveSlide(data, slides, nav, store, effect, isPrev)
+  }
   
 
   // определить хранилище обратных вызовов
@@ -204,11 +213,8 @@
 
       // определить обработчик для кнопки навигации
       button.addEventListener('click', () => {
-        // если автозапуск не отменялся
-        if (!stop) {
-          // определить новый интервал прокрутки слайдов
-          updateInterval(data, slides, nav, store, effect, back, time)
-        }
+        // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
+        stop || updateInterval(data, slides, nav, store, effect, back, time)
 
         // сделать этот слайд текущим
         data.current = slide
@@ -249,40 +255,18 @@
     
 
     // определить обработчик для кнопки Назад
-    prev.addEventListener('click', () => {
-      // если автозапуск не отменялся
-      if (!stop) {
-        // определить новый интервал прокрутки слайдов
-        updateInterval(data, slides, nav, store, effect, back, time)
-      }
-
-      // сдвинуть предыдущий слайд и сделать его текущим
-      moveSlide(data, slides, nav, store, effect, true)
-    })
-
+    prev.addEventListener('click', () => onClick(data, slides, nav, store, effect, back, time, stop, true))
 
     // определить обработчик для кнопки Вперёд
-    next.addEventListener('click', () => {
-      // если автозапуск не отменялся
-      if (!stop) {
-        // определить новый интервал прокрутки слайдов
-        updateInterval(data, slides, nav, store, effect, back, time)
-      }
-
-      // сдвинуть следующий слайд и сделать его текущим
-      moveSlide(data, slides, nav, store, effect)
-    })
+    next.addEventListener('click', () => onClick(data, slides, nav, store, effect, back, time, stop))
 
 
     // определить функцию для удаления обработчиков указателя
     const removeEvents = e => {
       // если функция вызывается как обработчик
       if (e) {
-        // если автозапуск не отменялся
-        if (!stop) {
-          // определить новый интервал прокрутки слайдов
-          updateInterval(data, slides, nav, store, effect, back, time)
-        }
+        // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
+        stop || updateInterval(data, slides, nav, store, effect, back, time)
 
         // сдвинуть текущий слайд к стартовой позиции
         scrollView(data.current)
@@ -304,12 +288,9 @@
     // добавить обработчик нажатия указателя внутри слайдера
     slides.addEventListener('pointerdown', getEventDown(data, slides, pointerMove, removeEvents))
 
-
-    // если автозапуск не отменялся
-    if (!stop) {
-      // определить новый интервал прокрутки слайдов
-      updateInterval(data, slides, nav, store, effect, back, time)
-    }
+    
+    // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
+    stop || updateInterval(data, slides, nav, store, effect, back, time)
 
     // добавить обратный вызов в хранилище
     callbacks.add(() => scrollView(data.current, 'instant'))

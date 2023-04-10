@@ -70,7 +70,8 @@ The basic slider settings are made through CSS variables in the *rxslider.css* f
   --navSize: 14px;
   --navUpper: 25px;
   --navLower: -35px;
-  --duration: .3s;
+  --durationHover: .3s;
+  --transitionActive: all .5s;
 }
 ```
 
