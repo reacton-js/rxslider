@@ -145,7 +145,7 @@
   }
 
   // вызывается в обработчике кнопок Назад/Вперёд
-  function onClick(data, slides, nav, store, effect, back, time, stop, isPrev) {
+  function onDown(data, slides, nav, store, effect, back, time, stop, isPrev) {
     // если автозапуск не отменялся, то определить новый интервал прокрутки слайдов
     stop || updateInterval(data, slides, nav, store, effect, back, time)
 
@@ -255,10 +255,10 @@
     
 
     // определить обработчик для кнопки Назад
-    prev.addEventListener('pointerdown', () => onClick(data, slides, nav, store, effect, back, time, stop, true))
+    prev.addEventListener('pointerdown', () => onDown(data, slides, nav, store, effect, back, time, stop, true))
 
     // определить обработчик для кнопки Вперёд
-    next.addEventListener('pointerdown', () => onClick(data, slides, nav, store, effect, back, time, stop))
+    next.addEventListener('pointerdown', () => onDown(data, slides, nav, store, effect, back, time, stop))
 
 
     // определить функцию для удаления обработчиков указателя
